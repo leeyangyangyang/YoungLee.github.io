@@ -3,48 +3,175 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>非正常博士研究中心 鲜蔬杯#2 ！！！</title>
+    <title>非正常博士研究中心 鲜蔬杯#2 计算器</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            margin-top: 50px;
+            margin-top: 20px;
+            background-color: #f0f0f0;
         }
         .calculator {
             display: inline-block;
-            border: 1px solid #ccc;
             padding: 20px;
             border-radius: 10px;
-            background-color: #f9f9f9;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 600px;
         }
-        input, button {
-            margin: 5px;
+        h1, h2 {
+            color: #333;
+        }
+        .section {
+            margin: 20px 0;
+        }
+        .section select, .section input {
             padding: 10px;
+            margin: 10px 0;
             font-size: 16px;
+        }
+        .section label {
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-top: 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        #result {
+            font-size: 20px;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
     <div class="calculator">
-        <h2>在线分数计算器</h2>
-        <input type="number" id="num1" placeholder="输入第一个数字">
-        <input type="number" id="num2" placeholder="输入第二个数字">
-        <button onclick="calculate()">计算</button>
-        <p id="result"></p>
+        <h1>非正常博士研究中心 鲜蔬杯#2 计算器</h1>
+
+        <!-- 第一部分：通过层数分 -->
+        <div class="section">
+            <h2>通过层数分</h2>
+            <label for="floor">选择层数：</label>
+            <select id="floor">
+                <option value="1">1层</option>
+                <option value="2">2层</option>
+                <option value="3">3层</option>
+                <option value="4">4层</option>
+                <option value="5">5层</option>
+                <option value="6">6层</option>
+            </select>
+
+            <label for="status">是否通过：</label>
+            <select id="status">
+                <option value="pass">通过</option>
+                <option value="fail">未通过</option>
+            </select>
+        </div>
+
+        <!-- 第二部分：关卡分和结局分 -->
+        <div class="section">
+            <h2>关卡分和结局分</h2>
+            <label for="normalMission">普通作战次数：</label>
+            <input type="number" id="normalMission" placeholder="输入次数">
+
+            <label for="emergencyMission">紧急作战次数：</label>
+            <input type="number" id="emergencyMission" placeholder="输入次数">
+
+            <label for="unexpectedMission">不期而遇作战次数：</label>
+            <input type="number" id="unexpectedMission" placeholder="输入次数">
+
+            <label for="ending">选择结局：</label>
+            <select id="ending">
+                <option value="0">无结局</option>
+                <option value="50">卢西恩 · 猩红血钻（50分）</option>
+                <option value="180">伤心的大锁（180分）</option>
+                <option value="100">剧团喉舌（100分）</option>
+                <option value="120">剧作家（120分）</option>
+            </select>
+        </div>
+
+        <!-- 第三部分：干员招募得分 -->
+        <div class="section">
+            <h2>干员招募得分</h2>
+            <label for="sixStarRecruit">6星干员招募次数：</label>
+            <input type="number" id="sixStarRecruit" placeholder="输入次数">
+
+            <label for="fiveStarRecruit">5星干员招募次数：</label>
+            <input type="number" id="fiveStarRecruit" placeholder="输入次数">
+
+            <label for="fourStarRecruit">4星干员招募次数：</label>
+            <input type="number" id="fourStarRecruit" placeholder="输入次数">
+
+            <label for="xpChoice">是否选择了自己XP干员：</label>
+            <select id="xpChoice">
+                <option value="0">否</option>
+                <option value="60">是（6星XP）</option>
+                <option value="30">是（5星XP）</option>
+            </select>
+        </div>
+
+        <!-- 第四部分：其他得分 -->
+        <div class="section">
+            <h2>其他得分</h2>
+            <label for="collections">藏品数量：</label>
+            <input type="number" id="collections" placeholder="输入藏品数量">
+
+            <label for="bossKill">鸭爵/高普尼克击杀次数：</label>
+            <input type="number" id="bossKill" placeholder="输入击杀次数">
+        </div>
+
+        <button onclick="calculate()">计算总分</button>
+
+        <div id="result"></div>
     </div>
 
     <script>
         function calculate() {
-            const num1 = parseFloat(document.getElementById('num1').value);
-            const num2 = parseFloat(document.getElementById('num2').value);
-            if (isNaN(num1) || isNaN(num2)) {
-                document.getElementById('result').innerText = "请输入有效数字！";
-            } else {
-                const result = num1 + num2;
-                document.getElementById('result').innerText = "计算结果: " + result;
-            }
+            // 第一部分得分：通过层数分
+            const floor = parseInt(document.getElementById('floor').value);
+            const status = document.getElementById('status').value;
+            let floorScore = 0;
+            if (floor === 1) floorScore = 50;
+            else if (floor === 2) floorScore = 100;
+            else if (floor === 3) floorScore = 100;
+            else if (floor === 4) floorScore = 150;
+            else if (floor === 5) floorScore = 150;
+            else if (floor === 6) floorScore = 150;
+            if (status === 'fail') floorScore *= 0.5;
+
+            // 第二部分得分：关卡分和结局分
+            const normalMission = parseInt(document.getElementById('normalMission').value) || 0;
+            const emergencyMission = parseInt(document.getElementById('emergencyMission').value) || 0;
+            const unexpectedMission = parseInt(document.getElementById('unexpectedMission').value) || 0;
+            const endingScore = parseInt(document.getElementById('ending').value);
+            const missionScore = (normalMission * 10) + (emergencyMission * 20) + (unexpectedMission * 20);
+
+            // 第三部分得分：干员招募得分
+            const sixStarRecruit = parseInt(document.getElementById('sixStarRecruit').value) || 0;
+            const fiveStarRecruit = parseInt(document.getElementById('fiveStarRecruit').value) || 0;
+            const fourStarRecruit = parseInt(document.getElementById('fourStarRecruit').value) || 0;
+            const xpChoice = parseInt(document.getElementById('xpChoice').value);
+            const recruitScore = (sixStarRecruit * 30) + (fiveStarRecruit * 20) + (fourStarRecruit * 10) + xpChoice;
+
+            // 第四部分得分：其他得分
+            const collections = parseInt(document.getElementById('collections').value) || 0;
+            const bossKill = parseInt(document.getElementById('bossKill').value) || 0;
+            const otherScore = (collections * 10) + (bossKill * 20);
+
+            // 总得分
+            const totalScore = floorScore + missionScore + endingScore + recruitScore + otherScore;
+
+            document.getElementById('result').innerText = "总得分: " + totalScore;
         }
     </script>
 </body>
 </html>
-
