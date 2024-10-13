@@ -146,27 +146,44 @@
         function calculate() {
             let details = '';
 
-            // 第一部分得分：通过层数分，累加得分
-            const floor = parseInt(document.getElementById('floor').value);
-            const status = document.getElementById('status').value;
-            let floorScore = 0;
+        // 第一部分得分：通过层数分，累加得分
+        const floor = parseInt(document.getElementById('floor').value);
+        const status = document.getElementById('status').value;
+        let floorScore = 0;
+        let floorDetail = '';
+        
+        // 累加前面所有已通过的层数得分
+        if (floor >= 1) floorScore += 50;  // 第1层
+        if (floor >= 2) floorScore += 100; // 第2层
+        if (floor >= 3) floorScore += 100; // 第3层
+        if (floor >= 4) floorScore += 150; // 第4层
+        if (floor >= 5) floorScore += 150; // 第5层
+        if (floor === 6) floorScore += 150; // 第6层
+        
+        // 处理未通过的情况：当前层得一半，前面层得全额
+        if (status === 'fail') {
+            let currentLayerScore = 0;
+        
+            // 确定当前层的分数
+            if (floor === 1) currentLayerScore = 50;
+            else if (floor === 2) currentLayerScore = 100;
+            else if (floor === 3) currentLayerScore = 100;
+            else if (floor === 4) currentLayerScore = 150;
+            else if (floor === 5) currentLayerScore = 150;
+            else if (floor === 6) currentLayerScore = 150;
+        
+            // 只给当前层一半分数
+            floorScore -= currentLayerScore / 2;
+            floorDetail = `到达第${floor}层 +${currentLayerScore / 2}分（前${floor - 1}层 +${floorScore}分）`;
+        
+        } else {
+            // 如果通过，则直接输出全额得分
+            floorDetail = `通过第${floor}层 +${floorScore}分`;
+        }
+        
+        // 输出得分详情
+        details += floorDetail + '<br>';
 
-            if (floor >= 1) floorScore += 50;
-            if (floor >= 2) floorScore += 100;
-            if (floor >= 3) floorScore += 100;
-            if (floor >= 4) floorScore += 150;
-            if (floor >= 5) floorScore += 150;
-            if (floor === 6) floorScore += 150;
-
-            let floorDetail = '';
-
-            if (status === 'fail') {
-                floorScore *= 0.5;
-                floorDetail = `到达第${floor}层 +${floorScore}分`;
-            } else {
-                floorDetail = `通过第${floor}层 +${floorScore}分`;
-            }
-            details += floorDetail + '<br>';
 
             // 第二部分得分：关卡分和结局分
             const normalMission = parseInt(document.getElementById('normalMission').value) || 0;
