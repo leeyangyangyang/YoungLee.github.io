@@ -21,7 +21,7 @@ repository               : "https://github.com/leeyangyangyang/YoungLee.github.i
 #               Additional customization can be done by editing /_includes/author-profile.html
 author:
   # Biographic information
-  avatar           : "profile.png"
+  avatar           : "nyako.png"
   name             : "Lee Young"
   pronouns         : # example: "she/her"  
   bio              : "A bio Student"
