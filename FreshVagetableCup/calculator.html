@@ -158,4 +158,64 @@
             if (floor >= 5) floorScore += 150;
             if (floor === 6) floorScore += 150;
 
-            let floor
+            let floorDetail = '';
+
+            if (status === 'fail') {
+                floorScore *= 0.5;
+                floorDetail = `到达第${floor}层 +${floorScore}分`;
+            } else {
+                floorDetail = `通过第${floor}层 +${floorScore}分`;
+            }
+            details += floorDetail + '<br>';
+
+            // 第二部分得分：关卡分和结局分
+            const normalMission = parseInt(document.getElementById('normalMission').value) || 0;
+            const emergencyMission = parseInt(document.getElementById('emergencyMission').value) || 0;
+            const unexpectedMission = parseInt(document.getElementById('unexpectedMission').value) || 0;
+            const missionScore = (normalMission * 10) + (emergencyMission * 20) + (unexpectedMission * 20);
+
+            details += `普通作战 ${normalMission} 次 +${normalMission * 10}分<br>`;
+            details += `紧急作战 ${emergencyMission} 次 +${emergencyMission * 20}分<br>`;
+            details += `不期而遇作战 ${unexpectedMission} 次 +${unexpectedMission * 20}分<br>`;
+
+            let endingScore = 0;
+            if (endings.length > 0) {
+                details += `结局: ${endings.join(', ')}<br>`;
+                endings.forEach(ending => {
+                    const score = parseInt(ending.match(/\d+/)); // 匹配结局中的分数
+                    endingScore += score || 0;
+                });
+            }
+
+            // 第三部分得分：干员招募得分
+            const sixStarRecruit = parseInt(document.getElementById('sixStarRecruit').value) || 0;
+            const fiveStarRecruit = parseInt(document.getElementById('fiveStarRecruit').value) || 0;
+            const fourStarRecruit = parseInt(document.getElementById('fourStarRecruit').value) || 0;
+            const xpSixStarRecruit = parseInt(document.getElementById('xpSixStarRecruit').value) || 0;
+            const xpFiveStarRecruit = parseInt(document.getElementById('xpFiveStarRecruit').value) || 0;
+
+            const recruitScore = (sixStarRecruit * 30) + (fiveStarRecruit * 20) + (fourStarRecruit * 10) + (xpSixStarRecruit * 60) + (xpFiveStarRecruit * 30);
+
+            details += `6星干员招募 ${sixStarRecruit} 次 +${sixStarRecruit * 30}分<br>`;
+            details += `5星干员招募 ${fiveStarRecruit} 次 +${fiveStarRecruit * 20}分<br>`;
+            details += `4星干员招募 ${fourStarRecruit} 次 +${fourStarRecruit * 10}分<br>`;
+            details += `6星XP干员 ${xpSixStarRecruit} 次 +${xpSixStarRecruit * 60}分<br>`;
+            details += `5星XP干员 ${xpFiveStarRecruit} 次 +${xpFiveStarRecruit * 30}分<br>`;
+
+            // 第四部分得分：其他得分
+            const collections = parseInt(document.getElementById('collections').value) || 0;
+            const bossKill = parseInt(document.getElementById('bossKill').value) || 0;
+            const otherScore = (collections * 10) + (bossKill * 20);
+
+            details += `藏品 ${collections} 件 +${collections * 10}分<br>`;
+            details += `鸭爵/高普尼克击杀 ${bossKill} 次 +${bossKill * 20}分<br>`;
+
+            // 总得分
+            const totalScore = floorScore + missionScore + endingScore + recruitScore + otherScore;
+
+            document.getElementById('result').innerText = "总得分: " + totalScore;
+            document.getElementById('details').innerHTML = details;
+        }
+    </script>
+</body>
+</html>
