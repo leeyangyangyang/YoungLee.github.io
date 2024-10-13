@@ -47,9 +47,10 @@
         button:hover {
             background-color: #218838;
         }
-        #result {
+        #result, #details {
             font-size: 20px;
             margin-top: 20px;
+            text-align: left;
         }
     </style>
 </head>
@@ -80,98 +81,81 @@
         <!-- 第二部分：关卡分和结局分 -->
         <div class="section">
             <h2>关卡分和结局分</h2>
-            <label for="normalMission">普通作战次数：</label>
-            <input type="number" id="normalMission" placeholder="输入次数">
+            <label for="normalMission">普通作战次数：</label><br>
+            <input type="number" id="normalMission" placeholder="输入次数"><br>
 
-            <label for="emergencyMission">紧急作战次数：</label>
-            <input type="number" id="emergencyMission" placeholder="输入次数">
+            <label for="emergencyMission">紧急作战次数：</label><br>
+            <input type="number" id="emergencyMission" placeholder="输入次数"><br>
 
-            <label for="unexpectedMission">不期而遇作战次数：</label>
-            <input type="number" id="unexpectedMission" placeholder="输入次数">
+            <label for="unexpectedMission">不期而遇作战次数：</label><br>
+            <input type="number" id="unexpectedMission" placeholder="输入次数"><br>
 
-            <label for="ending">选择结局：</label>
-            <select id="ending">
-                <option value="0">无结局</option>
-                <option value="50">卢西恩 · 猩红血钻（50分）</option>
-                <option value="180">伤心的大锁（180分）</option>
-                <option value="100">剧团喉舌（100分）</option>
-                <option value="120">剧作家（120分）</option>
-            </select>
+            <label for="ending">选择结局：</label><br>
+            <input type="text" id="endingInput" placeholder="输入结局名称和分数，例如 '卢西恩 · 猩红血钻 50分'" style="width: 80%;"><br>
+            <button onclick="addEnding()">添加结局</button>
+            <div id="endingList"></div>
         </div>
 
         <!-- 第三部分：干员招募得分 -->
         <div class="section">
             <h2>干员招募得分</h2>
             <label for="sixStarRecruit">6星干员招募次数：</label>
-            <input type="number" id="sixStarRecruit" placeholder="输入次数">
+            <input type="number" id="sixStarRecruit" placeholder="输入次数"><br>
 
             <label for="fiveStarRecruit">5星干员招募次数：</label>
-            <input type="number" id="fiveStarRecruit" placeholder="输入次数">
+            <input type="number" id="fiveStarRecruit" placeholder="输入次数"><br>
 
             <label for="fourStarRecruit">4星干员招募次数：</label>
-            <input type="number" id="fourStarRecruit" placeholder="输入次数">
+            <input type="number" id="fourStarRecruit" placeholder="输入次数"><br>
 
-            <label for="xpChoice">是否选择了自己XP干员：</label>
-            <select id="xpChoice">
-                <option value="0">否</option>
-                <option value="60">是（6星XP）</option>
-                <option value="30">是（5星XP）</option>
-            </select>
+            <label for="xpSixStarRecruit">6星XP干员次数：</label>
+            <input type="number" id="xpSixStarRecruit" placeholder="输入次数"><br>
+
+            <label for="xpFiveStarRecruit">5星XP干员次数：</label>
+            <input type="number" id="xpFiveStarRecruit" placeholder="输入次数"><br>
         </div>
 
         <!-- 第四部分：其他得分 -->
         <div class="section">
             <h2>其他得分</h2>
             <label for="collections">藏品数量：</label>
-            <input type="number" id="collections" placeholder="输入藏品数量">
+            <input type="number" id="collections" placeholder="输入藏品数量"><br>
 
             <label for="bossKill">鸭爵/高普尼克击杀次数：</label>
-            <input type="number" id="bossKill" placeholder="输入击杀次数">
+            <input type="number" id="bossKill" placeholder="输入击杀次数"><br>
         </div>
 
         <button onclick="calculate()">计算总分</button>
 
         <div id="result"></div>
+        <div id="details"></div>
     </div>
 
     <script>
+        let endings = [];
+
+        function addEnding() {
+            const endingInput = document.getElementById('endingInput').value;
+            if (endingInput.trim()) {
+                endings.push(endingInput);
+                document.getElementById('endingList').innerText = endings.join(', ');
+                document.getElementById('endingInput').value = ''; // 清空输入框
+            }
+        }
+
         function calculate() {
-            // 第一部分得分：通过层数分
+            let details = '';
+
+            // 第一部分得分：通过层数分，累加得分
             const floor = parseInt(document.getElementById('floor').value);
             const status = document.getElementById('status').value;
             let floorScore = 0;
-            if (floor === 1) floorScore = 50;
-            else if (floor === 2) floorScore = 100;
-            else if (floor === 3) floorScore = 100;
-            else if (floor === 4) floorScore = 150;
-            else if (floor === 5) floorScore = 150;
-            else if (floor === 6) floorScore = 150;
-            if (status === 'fail') floorScore *= 0.5;
 
-            // 第二部分得分：关卡分和结局分
-            const normalMission = parseInt(document.getElementById('normalMission').value) || 0;
-            const emergencyMission = parseInt(document.getElementById('emergencyMission').value) || 0;
-            const unexpectedMission = parseInt(document.getElementById('unexpectedMission').value) || 0;
-            const endingScore = parseInt(document.getElementById('ending').value);
-            const missionScore = (normalMission * 10) + (emergencyMission * 20) + (unexpectedMission * 20);
+            if (floor >= 1) floorScore += 50;
+            if (floor >= 2) floorScore += 100;
+            if (floor >= 3) floorScore += 100;
+            if (floor >= 4) floorScore += 150;
+            if (floor >= 5) floorScore += 150;
+            if (floor === 6) floorScore += 150;
 
-            // 第三部分得分：干员招募得分
-            const sixStarRecruit = parseInt(document.getElementById('sixStarRecruit').value) || 0;
-            const fiveStarRecruit = parseInt(document.getElementById('fiveStarRecruit').value) || 0;
-            const fourStarRecruit = parseInt(document.getElementById('fourStarRecruit').value) || 0;
-            const xpChoice = parseInt(document.getElementById('xpChoice').value);
-            const recruitScore = (sixStarRecruit * 30) + (fiveStarRecruit * 20) + (fourStarRecruit * 10) + xpChoice;
-
-            // 第四部分得分：其他得分
-            const collections = parseInt(document.getElementById('collections').value) || 0;
-            const bossKill = parseInt(document.getElementById('bossKill').value) || 0;
-            const otherScore = (collections * 10) + (bossKill * 20);
-
-            // 总得分
-            const totalScore = floorScore + missionScore + endingScore + recruitScore + otherScore;
-
-            document.getElementById('result').innerText = "总得分: " + totalScore;
-        }
-    </script>
-</body>
-</html>
+            let floor
