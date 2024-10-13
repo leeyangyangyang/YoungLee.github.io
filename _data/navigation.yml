@@ -7,3 +7,5 @@
 main:
   - title: "Publications"
     url: /publications/
+  - title: "Calculator"
+    url: /FreshVagetableCup/calculator.html
