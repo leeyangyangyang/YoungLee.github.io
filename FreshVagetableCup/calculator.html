@@ -69,7 +69,7 @@
                 <option value="4">4层</option>
                 <option value="5">5层</option>
                 <option value="6">6层</option>
-            </select>
+            </select><br>
 
             <label for="status">是否通过：</label>
             <select id="status">
@@ -91,12 +91,17 @@
             <input type="number" id="unexpectedMission" placeholder="输入次数"><br>
 
             <label for="ending">选择结局：</label><br>
-            <input type="text" id="endingInput" placeholder="输入结局名称和分数，例如 '卢西恩 · 猩红血钻 50分'" style="width: 80%;"><br>
+            <select id="endingSelect">
+                <option value="50">卢西恩 · 猩红血钻（50分）</option>
+                <option value="180">伤心的大锁（180分）</option>
+                <option value="100">剧团喉舌（100分）</option>
+                <option value="120">剧作家（120分）</option>
+            </select><br>
             <button onclick="addEnding()">添加结局</button>
             <div id="endingList"></div>
         </div>
 
-        <!-- 第三部分：干员招募得分 -->
+        <!-- 第三部分：临时干员招募得分 -->
         <div class="section">
             <h2>干员招募得分</h2>
             <label for="sixStarRecruit">6星干员招募次数：</label>
@@ -135,12 +140,18 @@
         let endings = [];
 
         function addEnding() {
-            const endingInput = document.getElementById('endingInput').value;
-            if (endingInput.trim()) {
-                endings.push(endingInput);
-                document.getElementById('endingList').innerText = endings.join(', ');
-                document.getElementById('endingInput').value = ''; // 清空输入框
-            }
+            const endingSelect = document.getElementById('endingSelect');
+            const selectedEndingText = endingSelect.options[endingSelect.selectedIndex].text;
+            const selectedEndingValue = endingSelect.value;
+
+            const selectedEnding = `${selectedEndingText} (${selectedEndingValue}分)`;
+
+            // 添加结局到列表
+            endings.push({ text: selectedEndingText, value: parseInt(selectedEndingValue) });
+
+            // 显示所有选中的结局
+            let endingListText = endings.map(ending => `${ending.text} +${ending.value}分`).join(', ');
+            document.getElementById('endingList').innerText = endingListText;
         }
 
         function calculate() {
@@ -197,12 +208,12 @@
 
             let endingScore = 0;
             if (endings.length > 0) {
-                details += `结局: ${endings.join(', ')}<br>`;
+                details += `结局: ${endings.map(ending => `${ending.text} +${ending.value}分`).join(', ')}<br>`;
                 endings.forEach(ending => {
-                    const score = parseInt(ending.match(/\d+/)); // 匹配结局中的分数
-                    endingScore += score || 0;
+                    endingScore += ending.value;
                 });
             }
+
 
             // 第三部分得分：干员招募得分
             const sixStarRecruit = parseInt(document.getElementById('sixStarRecruit').value) || 0;
