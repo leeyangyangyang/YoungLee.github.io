@@ -92,10 +92,10 @@
 
             <label for="ending">选择结局：</label><br>
             <select id="endingSelect">
-                <option value="50">卢西恩 · 猩红血钻 </option>
-                <option value="180">伤心的大锁 </option>
+                <option value="80">卢西恩 · 猩红血钻 </option>
+                <option value="220">伤心的大锁 </option>
                 <option value="100">剧团喉舌 </option>
-                <option value="120">剧作家 </option>
+                <option value="150">剧作家 </option>
             </select><br>
             <button onclick="addEnding()">添加结局</button>
             <div id="endingList"></div>
@@ -164,24 +164,24 @@
         let floorDetail = '';
         
         // 累加前面所有已通过的层数得分
-        if (floor >= 1) floorScore += 50;  // 第1层
-        if (floor >= 2) floorScore += 100; // 第2层
-        if (floor >= 3) floorScore += 100; // 第3层
-        if (floor >= 4) floorScore += 150; // 第4层
-        if (floor >= 5) floorScore += 150; // 第5层
-        if (floor === 6) floorScore += 150; // 第6层
+        if (floor >= 1) floorScore += 60;  // 第1层
+        if (floor >= 2) floorScore += 120; // 第2层
+        if (floor >= 3) floorScore += 150; // 第3层
+        if (floor >= 4) floorScore += 200; // 第4层
+        if (floor >= 5) floorScore += 200; // 第5层
+        if (floor === 6) floorScore += 100; // 第6层
         
         // 处理未通过的情况：当前层得一半，前面层得全额
         if (status === 'fail') {
             let currentLayerScore = 0;
         
             // 确定当前层的分数
-            if (floor === 1) currentLayerScore = 50;
-            else if (floor === 2) currentLayerScore = 100;
-            else if (floor === 3) currentLayerScore = 100;
-            else if (floor === 4) currentLayerScore = 150;
-            else if (floor === 5) currentLayerScore = 150;
-            else if (floor === 6) currentLayerScore = 150;
+            if (floor === 1) currentLayerScore = 60;
+            else if (floor === 2) currentLayerScore = 120;
+            else if (floor === 3) currentLayerScore = 150;
+            else if (floor === 4) currentLayerScore = 200;
+            else if (floor === 5) currentLayerScore = 200;
+            else if (floor === 6) currentLayerScore = 100;
         
             // 只给当前层一半分数
             floorScore -= currentLayerScore / 2;
@@ -200,11 +200,11 @@
             const normalMission = parseInt(document.getElementById('normalMission').value) || 0;
             const emergencyMission = parseInt(document.getElementById('emergencyMission').value) || 0;
             const unexpectedMission = parseInt(document.getElementById('unexpectedMission').value) || 0;
-            const missionScore = (normalMission * 10) + (emergencyMission * 20) + (unexpectedMission * 20);
+            const missionScore = (normalMission * 10) + (emergencyMission * 25) + (unexpectedMission * 30);
 
             details += `普通作战 ${normalMission} 次 +${normalMission * 10}分<br>`;
-            details += `紧急作战 ${emergencyMission} 次 +${emergencyMission * 20}分<br>`;
-            details += `不期而遇作战 ${unexpectedMission} 次 +${unexpectedMission * 20}分<br>`;
+            details += `紧急作战 ${emergencyMission} 次 +${emergencyMission * 25}分<br>`;
+            details += `不期而遇作战 ${unexpectedMission} 次 +${unexpectedMission * 30}分<br>`;
 
             let endingScore = 0;
             if (endings.length > 0) {
@@ -222,9 +222,9 @@
             const xpSixStarRecruit = parseInt(document.getElementById('xpSixStarRecruit').value) || 0;
             const xpFiveStarRecruit = parseInt(document.getElementById('xpFiveStarRecruit').value) || 0;
 
-            const recruitScore = (sixStarRecruit * 30) + (fiveStarRecruit * 20) + (fourStarRecruit * 10) + (xpSixStarRecruit * 60) + (xpFiveStarRecruit * 30);
+            const recruitScore = (sixStarRecruit * 40) + (fiveStarRecruit * 20) + (fourStarRecruit * 10) + (xpSixStarRecruit * 60) + (xpFiveStarRecruit * 30);
 
-            details += `6星干员招募 ${sixStarRecruit} 次 +${sixStarRecruit * 30}分<br>`;
+            details += `6星干员招募 ${sixStarRecruit} 次 +${sixStarRecruit * 40}分<br>`;
             details += `5星干员招募 ${fiveStarRecruit} 次 +${fiveStarRecruit * 20}分<br>`;
             details += `4星干员招募 ${fourStarRecruit} 次 +${fourStarRecruit * 10}分<br>`;
             details += `6星XP干员 ${xpSixStarRecruit} 次 +${xpSixStarRecruit * 60}分<br>`;
